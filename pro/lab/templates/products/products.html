@@ -1,0 +1,91 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+<h1 class="page-title">📚 Available Books</h1>
+
+<div style="display:flex; ">
+ <div style="min-width: 211px;
+    height: 253px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-top: 134px; 
+    margin-left:200px;
+    padding:5px; 
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+
+    <h3 style="margin-bottom:12px; font-size:18px; color:#333; border-bottom:1px solid #eee; padding-bottom:5px;">
+      📜Filters
+    </h3>
+    <form method="get" action="">
+      <select name="action" onchange="this.form.submit()" 
+              style="padding:10px; width:100%; margin-bottom:15px; border-radius:8px; border:1px solid #bbb; background:#f9f9f9; cursor:pointer; font-size:14px;">
+        <option value="">-- Select Filter --</option>
+        <option value="all">All Books</option>
+        <option value="fiction">Fiction Books</option>
+        <option value="expensive">Expensive Books</option>
+        <option value="available">Available Books</option>
+        <option value="exact">Exact Match</option>
+        <option value="in">Price in [23,200,500]</option>
+        <option value="range">Price Range (0-3000)</option>
+      </select>
+    </form>
+
+    <h3 style="margin-top:20px; margin-bottom:12px; font-size:18px; color:#333; border-bottom:1px solid #eee; padding-bottom:5px;">
+      🎯 By Genre
+    </h3>
+    <form method="get" action="">
+      <select name="genre" onchange="this.form.submit()" 
+              style="padding:10px; width:100%; border-radius:8px; border:1px solid #bbb; background:#f9f9f9; cursor:pointer; font-size:14px;">
+        <option value="">-- Select Genre --</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Non-fiction">Non-fiction</option>
+        <option value="Science">Science</option>
+        <option value="History">History</option>
+      </select>
+    </form>
+  </div>
+
+  
+  <div style="flex-grow:1; margin-right:350px;"> 
+    <form method="get" action="" style="margin-bottom:20px; text-align:center;">
+      <input type="text" id="searchInput" name="q" 
+             placeholder="🔍 Search books..." 
+             value="{{ request.GET.q }}" 
+             style="padding:10px; width:30%; border:1px solid #aaa; border-radius:8px; font-size:14px;">
+    </form>
+
+    <div class="books-container" id="booksList">
+      {% for book in books %}
+        <div class="book-card">
+          {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.name }}">
+          {% endif %}
+          <h2>{{ book.name }}</h2>
+          <p><strong>${{ book.price }}</strong></p>
+          <a href="{% url 'product' book.id %}" class="btn">View Details</a>
+        </div>
+      {% empty %}
+        <p>No books available yet 📖</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const booksList = document.getElementById('booksList');
+  const books = booksList.getElementsByClassName('book-card');
+
+  searchInput.addEventListener('keyup', function() {
+    const filter = searchInput.value.toLowerCase();
+    for (let i = 0; i < books.length; i++) {
+      let title = books[i].getElementsByTagName('h2')[0];
+      if (title) {
+        let textValue = title.textContent || title.innerText;
+        books[i].style.display = textValue.toLowerCase().includes(filter) ? "" : "none";
+      }
+    }
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+<div class="product-detail">
+    {% if book.image %}
+        <img src="{{ book.image.url }}" alt="{{ book.name }}">
+    {% endif %}
+    <div class="product-info">
+        <h1>{{ book.name }}</h1>
+        <p>{{ book.description }}</p>
+        <p><strong>Price:</strong> ${{ book.price }}</p>
+        <p><strong>Stock:</strong> {{ book.stock }}</p>
+        <button class="btn">🛒 Add to Cart</button>
+    </div>
+</div>
+{% endblock %}
+

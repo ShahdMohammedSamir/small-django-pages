@@ -1,4 +1,5 @@
 from django.db import models # type: ignore
+
 class books(models.Model):
     GENRE_CHOICES = [
         ("Fiction", "Fiction"),
@@ -23,4 +24,6 @@ class books(models.Model):
 
     def __str__(self):
         return self.name
+
+
 

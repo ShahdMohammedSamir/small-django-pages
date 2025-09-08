@@ -1,5 +1,5 @@
 from django.db import models # type: ignore
-
+from django import forms
 class Plant(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -8,3 +8,10 @@ class Plant(models.Model):
     image = models.ImageField(upload_to="plants/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class Login(models.Model):
+    username = models.CharField(max_length=150)
+    password = models.CharField(max_length=150)
+    
+    def _str_(self):
+        return self.username
